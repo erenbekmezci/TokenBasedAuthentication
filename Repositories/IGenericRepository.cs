@@ -13,7 +13,7 @@ namespace Repositories
         void Update(T entity);
         void Delete(T entity);
         ValueTask<T?> GetByIdAsync(int id);
-        IQueryable<T> GetAll();
+        Task<IEnumerable<T>> GetAllAsync();
         IQueryable<T> Where(Expression<Func<T,bool>> predicate);
 
 

@@ -19,7 +19,7 @@ namespace Repositories
             throw new NotImplementedException();
         }
 
-        public IQueryable<T> GetAll()
+        public Task<IEnumerable<T>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
