@@ -1,13 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Repositories.Products;
+using Repositories.Users;
+using Repositories.UserRefreshTokens;
+using System.Reflection;
 
 namespace Repositories
 {
-    public class AppDbContext 
+    public class AppDbContext : IdentityDbContext<User, IdentityRole , string>
     {
+        public AppDbContext(DbContextOptions options) : base(options)
+        {
 
+        }
+
+        public DbSet<Product> Products { get; set; } = default!;
+        public DbSet<UserRefreshToken> UserRefreshTokens { get; set; } = default!;
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            //builder.ApplyConfiguration(new ProductConfiguration());
+            builder.ApplyConfigurationsFromAssembly(GetType().Assembly);//bu proje klasörü yani assembly (repository)  deki IEntityConfigurationı implemente eden tüm sınıfları al demek
+            Console.WriteLine("asdasdasdasd",Assembly.GetExecutingAssembly());
+            base.OnModelCreating(builder);
+        }
     }
 }

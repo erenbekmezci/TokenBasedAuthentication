@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -7,36 +8,43 @@ using System.Threading.Tasks;
 
 namespace Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T>(AppDbContext context) : IGenericRepository<T> where T : class
     {
-        public ValueTask AddAsync(T entity)
+        private readonly DbSet<T> dbSet = context.Set<T>();
+        protected AppDbContext _context = context;
+
+        public async ValueTask AddAsync(T entity)
         {
-            throw new NotImplementedException();
+            await dbSet.AddAsync(entity);
         }
 
         public void Delete(T entity)
         {
-            throw new NotImplementedException();
+            dbSet.Remove(entity);
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await dbSet.ToListAsync();
         }
 
-        public ValueTask<T?> GetByIdAsync(int id)
+        public async ValueTask<T?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var entity = await dbSet.FindAsync(id);
+            if (entity != null)
+               _context.Entry(entity).State = EntityState.Detached;
+            return entity;
         }
 
         public void Update(T entity)
         {
-            throw new NotImplementedException();
+            _context.Entry(entity).State = EntityState.Modified;
+            //dbSet.Update(entity);
         }
 
-        public IQueryable<T> Where(Expression<Func<T, bool>> predicate)
+        public  IQueryable<T> Where(Expression<Func<T, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return  dbSet.Where(predicate).AsNoTracking();
         }
     }
 }
