@@ -18,11 +18,11 @@ This project is designed to help developers understand how to implement token-ba
 
 ## Getting Started
 
-To get a local copy up and running follow these simple example steps.
+
 
 ### Prerequisites
 
-- [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) installed on your machine.
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) installed on your machine.
 - A code editor like [Visual Studio](https://visualstudio.microsoft.com/) or [VS Code](https://code.visualstudio.com/).
 
 
