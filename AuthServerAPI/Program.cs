@@ -29,16 +29,9 @@ internal class Program
         builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-
-
-
-
-
-        var app = builder.Build();
-
         builder.Services.AddDbContext<AppDbContext>(options =>
         {
-            options.UseSqlServer(app.Configuration.GetConnectionString("SqlServer"), option =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"), option =>
             {
                 option.MigrationsAssembly("Repositories");
             });
@@ -50,12 +43,14 @@ internal class Program
             options.Password.RequireNonAlphanumeric = false;
         }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
-        builder.Services.Configure<CustomTokenOption>(app.Configuration.GetSection("TokenOption"));
-        builder.Services.Configure<List<Client>>(app.Configuration.GetSection("Clients"));
 
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt=>
+
+        builder.Services.Configure<CustomTokenOption>(builder.Configuration.GetSection("TokenOption"));
+        builder.Services.Configure<List<Client>>(builder.Configuration.GetSection("Clients"));
+
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
         {
-            CustomTokenOption tokenOption = app.Configuration.GetSection("TokenOption").Get<CustomTokenOption>();
+            CustomTokenOption tokenOption = builder.Configuration.GetSection("TokenOption").Get<CustomTokenOption>();
 
             opt.TokenValidationParameters = new TokenValidationParameters()
             {
@@ -73,9 +68,12 @@ internal class Program
 
             };
         });
-  
 
 
+
+
+
+        var app = builder.Build();
 
 
         // Configure the HTTP request pipeline.
@@ -87,6 +85,7 @@ internal class Program
         //Console.WriteLine(Assembly.GetExecutingAssembly());
         app.UseHttpsRedirection();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllers();
