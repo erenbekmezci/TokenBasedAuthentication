@@ -10,20 +10,20 @@ namespace Repositories
 {
     public class AppDbContext : IdentityDbContext<User, IdentityRole , string>
     {
-        public AppDbContext(DbContextOptions options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
         }
 
-        public DbSet<Product> Products { get; set; } = default!;
-        public DbSet<UserRefreshToken> UserRefreshTokens { get; set; } = default!;
+        public DbSet<Product> Products { get; set; }
+        public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             //builder.ApplyConfiguration(new ProductConfiguration());
             builder.ApplyConfigurationsFromAssembly(GetType().Assembly);//bu proje klasörü yani assembly (repository)  deki IEntityConfigurationı implemente eden tüm sınıfları al demek
-            Console.WriteLine("asdasdasdasd",Assembly.GetExecutingAssembly());
+            //Console.WriteLine("asdasdasdasd",Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);
         }
     }

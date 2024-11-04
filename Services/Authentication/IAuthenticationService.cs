@@ -2,7 +2,7 @@
 using Shared;
 
 
-namespace Services
+namespace Services.Authentication
 {
     public interface IAuthenticationService
     {
@@ -11,7 +11,7 @@ namespace Services
 
         Task<ServiceResult> RevokeRefreshToken(string refreshToken);//tokeni null yapar kullanıcı logout olduğunda veya sürekli bir istek olduğunda(çalınma riski)
 
-        Task<ServiceResult<ClientTokenDto>> CreateTokenByClientAsync(ClientLoginDto clientDto);
+        ServiceResult<ClientTokenDto> CreateTokenByClientAsync(ClientLoginDto clientDto);
 
 
     }

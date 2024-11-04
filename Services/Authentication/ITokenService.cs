@@ -2,7 +2,7 @@
 using Services.Configuration;
 using Services.Dto;
 
-namespace Services
+namespace Services.Authentication
 {
     public interface ITokenService
     {
