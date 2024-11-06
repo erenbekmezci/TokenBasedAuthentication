@@ -9,6 +9,7 @@ using Services;
 using Services.Authentication;
 using Services.Configuration;
 using Services.Users;
+using Shared;
 
 internal class Program
 {
@@ -48,7 +49,12 @@ internal class Program
         builder.Services.Configure<CustomTokenOption>(builder.Configuration.GetSection("TokenOption"));
         builder.Services.Configure<List<Client>>(builder.Configuration.GetSection("Clients"));
 
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+        builder.Services.AddAuthentication(option=> 
+        {
+            option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            
+        }).AddJwtBearer(opt =>
         {
             CustomTokenOption tokenOption = builder.Configuration.GetSection("TokenOption").Get<CustomTokenOption>();
 

@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Repositories.Users;
 using Services.Configuration;
 using Services.Dto;
+using Shared;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -56,7 +57,7 @@ namespace Services.Authentication
             var securityKey = SignService.GetSymmetricSecurityKey(tokenOption.SecurityKey!);
 
             SigningCredentials signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
-            Console.WriteLine(signingCredentials);
+            //Console.WriteLine(signingCredentials);
             var jwtSecurityToken = new JwtSecurityToken(
                 issuer: tokenOption.Issuer,
                 expires: accessTokenExpiration,
@@ -66,7 +67,7 @@ namespace Services.Authentication
             );
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.WriteToken(jwtSecurityToken);
-            Console.WriteLine(token);
+           // Console.WriteLine(token);
 
             var tokenDto = new TokenDto(token, accessTokenExpiration, CreateRefreshToken(), refreshTokenExpiration);
 

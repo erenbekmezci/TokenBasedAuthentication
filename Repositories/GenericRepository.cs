@@ -44,7 +44,7 @@ namespace Repositories
 
         public  IQueryable<T> Where(Expression<Func<T, bool>> predicate)
         {
-            return  dbSet.Where(predicate).AsNoTracking();
+            return dbSet.Where(predicate);
         }
     }
 }

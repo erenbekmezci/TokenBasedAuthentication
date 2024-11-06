@@ -37,7 +37,7 @@ namespace Services.Users
 
         public async Task<ServiceResult<UserDto>> GetUserByName(string userName)
         {
-            Console.Write("sasdasdasd");
+            Console.WriteLine("GetUserByName");
             var user = await _userManager.FindByNameAsync(userName);
 
             if (user == null)

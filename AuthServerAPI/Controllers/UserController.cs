@@ -6,6 +6,7 @@ using Services.Users;
 namespace AuthServerAPI.Controllers
 {
     [Route("/api/[controller]")]
+    [ApiController]
     public class UserController(IUserService  userService) : CustomController
     {
         [HttpPost]
@@ -19,7 +20,8 @@ namespace AuthServerAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUser()
         {
-            Console.Write("name :   " , HttpContext.User.Identity.Name);
+            Console.WriteLine("GetUser Name: " + HttpContext.User.Identity.Name);
+
             var result = await userService.GetUserByName(HttpContext.User.Identity.Name);
             return Result(result);
         }

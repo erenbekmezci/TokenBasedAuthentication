@@ -5,6 +5,7 @@ using Shared;
 
 namespace AuthServerAPI.Controllers
 {
+    [ApiController]
     [Route("/api/[controller]/[action]")]
     public class AuthController(IAuthenticationService authenticationService) : CustomController
     {
@@ -12,6 +13,7 @@ namespace AuthServerAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateToken(LoginDto loginDto)
         {
+            Console.WriteLine("dfsdfsdf");
             var response = await authenticationService.CreateTokenAsync(loginDto);
             return Result(response);
         }

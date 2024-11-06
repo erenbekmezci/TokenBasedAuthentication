@@ -63,7 +63,7 @@ namespace Services.Authentication
         {
             var client = clients.SingleOrDefault(x => x.Id == clientDto.clientID && x.Secret == clientDto.secret);
 
-            if (client == null) ServiceResult<ClientTokenDto>.Fail("client id or secret not found");
+            if (client == null) return ServiceResult<ClientTokenDto>.Fail("client id or secret not found");
 
             var token = tokenService.CreateTokenByClient(client!);
 
@@ -75,10 +75,11 @@ namespace Services.Authentication
         public async Task<ServiceResult<TokenDto>> CreateTokenByRefreshToken(string refreshToken)
         {
             var existRefreshToken = userRefreshTokenService.Where(x => x.Code == refreshToken).SingleOrDefault();
+            Console.WriteLine("refresh " , existRefreshToken);
 
-            if (existRefreshToken == null) ServiceResult<TokenDto>.Fail("refresh token not found", System.Net.HttpStatusCode.NotFound);
+            if (existRefreshToken == null)return ServiceResult<TokenDto>.Fail("refresh token not found", System.Net.HttpStatusCode.NotFound);
 
-            var user = await userManager.FindByIdAsync(existRefreshToken!.UserId);
+            var user = await userManager.FindByIdAsync(existRefreshToken.UserId);
 
             if (user == null) ServiceResult<TokenDto>.Fail("user not found", System.Net.HttpStatusCode.NotFound);
 
@@ -97,9 +98,9 @@ namespace Services.Authentication
         {
             var existRefreshToken = await userRefreshTokenService.Where(x => x.Code == refreshToken).SingleOrDefaultAsync();
 
-            if (existRefreshToken == null) ServiceResult.Fail("refresh token not found", System.Net.HttpStatusCode.NotFound);
+            if (existRefreshToken == null) return ServiceResult.Fail("refresh token not found", System.Net.HttpStatusCode.NotFound);
 
-            userRefreshTokenService.Delete(existRefreshToken!);
+            userRefreshTokenService.Delete(existRefreshToken);
 
             await unitOfWork.SaveChangesAsync();
 

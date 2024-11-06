@@ -3,7 +3,8 @@ using Shared;
 
 namespace AuthServerAPI.Controllers
 {
-    [ApiController]
+
+  
 
     public class CustomController  : Controller
     {
